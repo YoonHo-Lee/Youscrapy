@@ -8,10 +8,6 @@ import pytube,urllib
 from lib.Youscrapy_Layout import Ui_MainWindow
 from pytube import YouTube
 
-#1)Log폴더 없는 경우 해결 V
-#2) YouTube정규식 적용
-#3)옳바르지 않는 동영상 주소 체크 V
-#4)다운로드 경로 저장해놓기 V
 
 #실행 파일 경로 불러오기.
 fp = os.path.dirname(os.path.abspath(__file__))
@@ -26,8 +22,6 @@ class Main(QMainWindow, Ui_MainWindow):
 
         self.showStatusMsg('Hello Youscrapy!!!')
         self.check = 0
-        ###더미 데이터
-        #self.textEdit_URL.setText('https://www.youtube.com/watch?v=5HSy4PiUEDw')
 
     #시그널 초기화
     def initSignal(self) :
@@ -109,7 +103,6 @@ class Main(QMainWindow, Ui_MainWindow):
         self.plainTextEdit.appendPlainText(app_msg) #insertPlainText는 줄을 바꾸지 않음
 
         #app_msg를 활동 로그에 저장
-        #1)Log폴더 없는 경우 해결
         if not os.path.isdir(fp+'/log') :
             os.mkdir(fp+'/log')
         with open(fp+'/log/{}'.format(logDatetime), 'a') as f:
@@ -138,7 +131,6 @@ class Main(QMainWindow, Ui_MainWindow):
     @pyqtSlot()
     def on_btn_Preview_clicked(self) :
         #url 입력받고 정규식으로 체크
-        #2) YouTube정규식 적용
         url = self.textEdit_URL.text().strip()
         v = re.compile("^https://www.youtube.com/?")
         self.check = 0
@@ -217,7 +209,6 @@ class YouTube_Info(QThread) :
     @pyqtSlot(str, bytes, list, int)
     def run(self) :
         print('run')
-        #3)옳바르지 않는 동영상 주소 체크
         try:
             print('try')
             self.get_Info(self.yt_url)
