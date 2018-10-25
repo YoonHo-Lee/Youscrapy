@@ -7,5 +7,5 @@ Youscrapy는 오픈 소스 기반 GUI 툴로써, YouTube 다운로더입니다.
 
 ## 동작화면
 
-<img src="run.gif">
+<img src="run_mac.gif">
 
