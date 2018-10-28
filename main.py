@@ -1,10 +1,10 @@
 import sys, os
-from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, uic
+from PyQt5.QtWidgets import *
 from PyQt5.QtCore import QThread, pyqtSlot, pyqtSignal, QRect
 from PyQt5.QtGui import QPixmap, QImage, QMovie
 import re, datetime
-import pytube,urllib
+import urllib
 from lib.Youscrapy_Layout import Ui_MainWindow
 from pytube import YouTube
 
@@ -49,7 +49,8 @@ class Main(QMainWindow, Ui_MainWindow):
     # YouTube_Info클래스에서 불러온 데이터 세팅.
     def setInfo(self, title, thumbnail, stream, check) :
         if not check == 1 :
-            self.label_thumbnail.setPixmap(QPixmap(fp + "/resource/YouTube.jpg"))
+            # self.label_thumbnail.setPixmap(QPixmap(fp + "/resource/YouTube.jpg"))
+            self.label_thumbnail.setPixmap(QPixmap("./resource/YouTube.jpg"))
             self.append_Log_Msg('YouTube Receive Failed...')
             self.errorPopup('url')
             return None
@@ -70,7 +71,7 @@ class Main(QMainWindow, Ui_MainWindow):
     #화질 불러오기.
     def setComboStream(self,stream) :
         self.combo_Stream.clear()
-        print(stream)
+        #print(stream)
         for q in stream :
             # print(q.resolution) # res로 불러오면 안되는데, 버그인듯?
             tmp_list, str_list = [], []
@@ -86,7 +87,7 @@ class Main(QMainWindow, Ui_MainWindow):
     #프로그래스바 설정.
     def setProgress(self, value):
         self.progressBar.setValue(value)
-        print(value)
+        #print(value)
         if value >= 100 and self.check == 0:
             self.check += 1
             self.append_Log_Msg('Download Complete!!!')
@@ -208,9 +209,7 @@ class YouTube_Info(QThread) :
 
     @pyqtSlot(str, bytes, list, int)
     def run(self) :
-        print('run')
         try:
-            print('try')
             self.get_Info(self.yt_url)
             yttitle = self.yt_title
             ytthumbnail = self.yt_thumbnail
@@ -231,7 +230,7 @@ class YouTube_Info(QThread) :
         thumbnail = video_info.thumbnail_url
         self.yt_thumbnail = urllib.request.urlopen(thumbnail).read()
         self.yt_stream = video_info.streams.all()
-        print(self.yt_stream)
+        #print(self.yt_stream)
 
 
 #---------- YouTube Down ----------#
@@ -252,11 +251,11 @@ class YouTube_Down(QThread) :
     def download(self, url, path, stream):
         video = YouTube(url)
         video_streams = video.streams.all()
-        print('video.register_on_complete_callback')
+        #print('video.register_on_complete_callback')
         video.register_on_progress_callback(self.progress_Bar)
         try:
-            print('self.video')
-            print(url, path, stream)
+            #print('self.video')
+            #print(url, path, stream)
             video_streams[stream].download(path)
         except:
             print("YouTube_Down - Error")
